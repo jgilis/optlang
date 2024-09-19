@@ -398,9 +398,10 @@ class Configuration(interface.MathematicalProgrammingConfiguration, metaclass=in
         for key, val in state.items():
             if key != "tolerances":
                 setattr(self, key, val)
-        for key, val in state["tolerances"].items():
-            if key in self._tolerance_functions():
-                setattr(self.tolerances, key, val)
+        if "tolerances" in state:
+            for key, val in state["tolerances"].items():
+                if key in self._tolerance_functions():
+                    setattr(self.tolerances, key, val)
 
     def _set_presolve(self, value):
         self._smcp.presolve = {False: GLP_OFF, True: GLP_ON, "auto": GLP_OFF}[value]
